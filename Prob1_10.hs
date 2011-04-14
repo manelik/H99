@@ -62,12 +62,21 @@ isPalindrome x =
 Transform a list, possibly holding lists as elements into a `flat'
 list by replacing each list with its elements (recursively). -}
 
+--Need to learn hoe to handle this kind of structures
+
 {-8 Problem 8
 
 (**) Eliminate consecutive duplicates of list elements.
 If a list contains repeated elements they should be replaced with a
 single copy of the element. The order of the elements should not be
 changed. -}
+transAltuzar :: Eq a => [a]-> [a]
+transAltuzar [] = []
+transAltuzar (x:[]) = x:[]
+transAltuzar (x:xs) =
+    let x1 =  if x /= (head xs) then x:[]
+              else []
+    in x1++(transAltuzar xs)
 
 {-9 Problem 9
 
