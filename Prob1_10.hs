@@ -83,6 +83,12 @@ transAltuzar (x:xs) =
 (**) Pack consecutive duplicates of list elements into sublists.  If a
  list contains repeated elements they should be placed in separate
  sublists.-}
+pack :: Eq a => [a]->[[a]]
+pack [] = []
+pack (x:[]) = (x:[]):[]
+pack (x:xs) =
+    if x==(head xs) then (x:(head . pack)xs):((tail . pack) xs)
+    else (x:[]):(pack xs)
 
 {-10 Problem 10
 
@@ -91,4 +97,13 @@ implement the so-called run-length encoding data compression
 method. Consecutive duplicates of elements are encoded as lists (N E)
 where N is the number of duplicates of the element E. -}
 
-
+encode :: Eq a => [a] -> [(Int,a)]
+encode [] = []
+--lazy solution
+encode x =
+    let pcount [] = []
+        pcount a = (((myLenght.head) a , (head.head) a):[])++((pcount.tail) a)
+    in (pcount.pack) x
+{- Another not so lazy way is to use the same rcursive algrithm as
+ pack.  If there are consecutive duplicates rebulid head, if there is
+ a change insert new head-}
