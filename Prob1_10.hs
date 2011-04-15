@@ -1,6 +1,8 @@
 module Prob1_10
     where
 
+-- Actually ListProblems would do a better name
+
 {-1 Problem 1
 
 (*) Find the last element of a list.  -}
@@ -107,3 +109,126 @@ encode x =
 {- Another not so lazy way is to use the same rcursive algrithm as
  pack.  If there are consecutive duplicates rebulid head, if there is
  a change insert new head-}
+
+
+{-1 Problem 11
+
+(*) Modified run-length encoding.
+
+Modify the result of problem 10 in such a way that if an element has
+no duplicates it is simply copied into the result list. Only elements
+with duplicates are transferred as (N E) lists. -}
+
+--Need a list tipe that has pairs and single values as elements
+
+
+{-2 Problem 12
+
+(**) Decode a run-length encoded list.
+
+Given a run-length code list generated as specified in problem
+11. Construct its uncompressed version. -}
+
+-- unmodified
+decode :: [( Int , a )] -> [a]
+decode [] = []
+decode ((0,a):xs) = decode xs
+decode ((n,a):xs) = a:[] ++ decode ( (n-1,a):xs)
+
+
+{- 3 Problem 13
+
+(**) Run-length encoding of a list (direct solution).
+
+Implement the so-called run-length encoding data compression method
+directly. I.e. don't explicitly create the sublists containing the
+duplicates, as in problem 9, but only count them. As in problem P11,
+simplify the result list by replacing the singleton lists (1 X) by
+X. -}
+
+-- this is the not so lazy method I was talking about
+
+encodeD :: Eq a => [a]->[(Int,a)]
+encodeD [] = []
+encodeD (x:[]) = (1,x):[]
+encodeD (x:xs) =
+    let xh= (head . encodeD) xs
+    in if x==(snd xh) then ( (fst xh)+1, x) :((tail . encodeD) xs)
+       else (1,x):(encodeD xs)
+
+{-4 Problem 14
+
+(*) Duplicate the elements of a list.  -}
+
+duppeList :: [a] -> [a]
+duppeList [] = []
+duppeList (x:xs) = x:x:(duppeList xs)
+
+-- iteration of this function is almost equivalent to translate 
+-- a list to altuzar-spiiiiiiiiikkkkkkkkkkk 
+
+
+{-5 Problem 15
+
+(**) Replicate the elements of a list a given number of times.  -}
+
+repList :: Int -> [a] -> [a]
+repList n [] = []
+repList 0 x = []
+repList n (x:xs) = x:[]++(repList (n-1) (x:[]))++(repList n xs)
+
+
+{- 6 Problem 16
+
+(**) Drop every N'th element from a list. -}
+
+mydrop :: Int -> [a] -> [a]
+mydrop n [] = []
+--mydrop 1 x = []
+mydrop n (x:xs) = 
+    let rm1occur nl [] = ([],[])
+        rm1occur 1 xl = ([],tail xl)
+        rm1occur nl (xl:xsl) = (xl:fst((rm1occur (nl-1) xsl)),snd ((rm1occur (nl-1) xsl)) ) 
+    in fst(rm1occur n (x:xs))++(mydrop n (snd(rm1occur n (x:xs))) )
+
+{- 7 Problem 17
+
+(*) Split a list into two parts; the length of the first part is
+given. -}
+
+mySplit :: Int -> [a] -> ([a],[a])
+mySplit n [] = ([],[])
+mySplit 1 (x:xs) = (x:[],xs)
+mySplit n (x:xs) = (x:fst((mySplit (n-1) xs)),snd ((mySplit (n-1) xs)) )
+
+{-8 Problem 18
+
+(**) Extract a slice from a list.
+
+Given two indices, i and k, the slice is the list containing the
+elements between the i'th and k'th element of the original list (both
+limits included). Start counting the elements with 1.  -}
+
+slice :: Int -> Int -> [a] ->[a]
+slice n m [] = []
+slice 1 1 (x:xs) = x:[]
+slice 1 m (x:xs) = x:(slice 1 (m-1) xs)
+slice n m (x:xs) = slice (n-1)(m-1) xs
+
+
+{-9 Problem 19
+
+(**) Rotate a list N places to the left.
+
+Hint: Use the predefined functions length and (++).  -}
+
+rotate :: Int -> [a] ->[a]
+rotate n [] = []
+rotate n x =
+    let aux = mySplit (mod n (length x)) x
+    in (snd aux)++(fst aux)
+
+{-10 Problem 20
+
+(*) Remove the K'th element from a list.  -}
+
