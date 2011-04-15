@@ -232,3 +232,78 @@ rotate n x =
 
 (*) Remove the K'th element from a list.  -}
 
+popAt :: Int -> [a] -> (a,[a])
+--popAt n [] = ([],[]) --this case will be met if n > length x
+popAt 1 (x:xs) = (x,xs)
+popAt n (x:xs) = (fst(popAt (n-1) xs), x:(snd (popAt (n-1) xs)) )
+
+
+{-Problem 21
+
+Insert an element at a given position into a list. -}
+
+insertAt :: Int -> a -> [a] -> [a]
+insertAt n a [] = a:[] --for the moment
+insertAt 1 a x = a:x
+insertAt n a (x:xs) = x:(insertAt (n-1) a xs)
+
+{-2 Problem 22
+
+Create a list containing all integers within a given range. -}
+
+myRange (Ord a, Num a) => a -> a -> [a]
+--myRange n n = n:[]
+myRange n m = if n>m then []
+              else n:(myRange (n+1) m)
+
+{-3 Problem 23
+
+Extract a given number of randomly selected elements from a list. -}
+
+{-4 Problem 24
+
+Lotto: Draw N different random numbers from the set 1..M. -}
+
+{-5 Problem 25
+
+Generate a random permutation of the elements of a list. -}
+
+{-6 Problem 26
+
+(**) Generate the combinations of K distinct objects chosen from the N elements of a list
+
+In how many ways can a committee of 3 be chosen from a group of 12
+people? We all know that there are C(12,3) = 220 possibilities (C(N,K)
+denotes the well-known binomial coefficients). For pure
+mathematicians, this result may be great. But we want to really
+generate all the possibilities in a list.-}
+
+{-7 Problem 27 
+
+Group the elements of a set into disjoint subsets.
+
+a) In how many ways can a group of 9 people work in 3 disjoint
+subgroups of 2, 3 and 4 persons? Write a function that generates all
+the possibilities and returns them in a list. 
+
+b) Generalize the above predicate in a way that we can specify a list
+of group sizes and the predicate will return a list of groups. -}
+
+{-8 Problem 28
+
+Sorting a list of lists according to length of sublists
+
+a) We suppose that a list contains elements that are lists
+themselves. The objective is to sort the elements of this list
+according to their length. E.g. short lists first, longer lists later,
+or vice versa. 
+
+b) Again, we suppose that a list contains elements that are lists
+themselves. But this time the objective is to sort the elements of
+this list according to their length frequency; i.e., in the default,
+where sorting is done ascendingly, lists with rare lengths are placed
+first, others with a more frequent length come later. -}
+
+
+
+
