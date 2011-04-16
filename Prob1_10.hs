@@ -1,9 +1,27 @@
 module Prob1_10
     where
 
+--import Random
+
+
+-- Standard random function
+
+getRndInt :: () -> Int
+getRndInt () = 4 -- chosen by fair dice roll.
+                 -- guaranteed to be random.
+
+getRndinRange :: Int -> Int -> Int
+getRndinRange a b =
+    if a <= b then
+        if a > 4 then a 
+        else if b < 4 then b
+             else 4
+    else 4
+
+
 -- Actually ListProblems would do a better name
 
-{-1 Problem 1
+{- Problem 1
 
 (*) Find the last element of a list.  -}
 myLast :: [a]-> Maybe a
@@ -12,7 +30,7 @@ myLast (x:[]) = Just x
 myLast (x:xs) = myLast xs
 
 
-{- 2 Problem 2
+{- Problem 2
 
 (*) Find the last but one element of a list. -} 
 myButLast :: [a]-> Maybe a
@@ -22,7 +40,7 @@ myButLast (x:(y:[])) = Just x
 myButLast (x:xs) = myButLast xs
 
 
-{-3 Problem 3
+{- Problem 3
 
 (*) Find the K'th element of a list. The first element in the list is number 1. -}
 elementAt :: [a]-> Int -> Maybe a
@@ -31,14 +49,15 @@ elementAt (x:xs) 1 = Just x
 elementAt (x:xs) n = elementAt xs (n-1)
 
 
-{-4 Problem 4
+{- Problem 4
 
 (*) Find the number of elements of a list. -}
 myLenght :: [a]-> Int
 myLenght [] = 0
 myLenght (x:xs) = 1 + (myLenght xs)
 
-{-5 Problem 5
+
+{- Problem 5
 
 (*) Reverse a list. -}
 myReverse :: [a]->[a]
@@ -47,7 +66,8 @@ myReverse (x:xs) =
     let x1 = (myReverse xs)
     in x1 ++ (x:[])
 
-{-6 Problem 6
+
+{- Problem 6
 
 (*) Find out whether a list is a palindrome. A palindrome can be read
 forward or backward; e.g. (x a m a x). -}
@@ -58,7 +78,7 @@ isPalindrome x =
     in if x==x1 then True
        else False
 
-{-7 Problem 7
+{- Problem 7
 
 (**) Flatten a nested list structure.
 Transform a list, possibly holding lists as elements into a `flat'
@@ -66,7 +86,7 @@ list by replacing each list with its elements (recursively). -}
 
 --Need to learn hoe to handle this kind of structures
 
-{-8 Problem 8
+{- Problem 8
 
 (**) Eliminate consecutive duplicates of list elements.
 If a list contains repeated elements they should be replaced with a
@@ -80,7 +100,7 @@ transAltuzar (x:xs) =
               else []
     in x1++(transAltuzar xs)
 
-{-9 Problem 9
+{- Problem 9
 
 (**) Pack consecutive duplicates of list elements into sublists.  If a
  list contains repeated elements they should be placed in separate
@@ -92,7 +112,7 @@ pack (x:xs) =
     if x==(head xs) then (x:(head . pack)xs):((tail . pack) xs)
     else (x:[]):(pack xs)
 
-{-10 Problem 10
+{- Problem 10
 
 (*) Run-length encoding of a list. Use the result of problem P09 to
 implement the so-called run-length encoding data compression
@@ -111,7 +131,7 @@ encode x =
  a change insert new head-}
 
 
-{-1 Problem 11
+{- Problem 11
 
 (*) Modified run-length encoding.
 
@@ -122,7 +142,7 @@ with duplicates are transferred as (N E) lists. -}
 --Need a list tipe that has pairs and single values as elements
 
 
-{-2 Problem 12
+{- Problem 12
 
 (**) Decode a run-length encoded list.
 
@@ -136,7 +156,7 @@ decode ((0,a):xs) = decode xs
 decode ((n,a):xs) = a:[] ++ decode ( (n-1,a):xs)
 
 
-{- 3 Problem 13
+{- Problem 13
 
 (**) Run-length encoding of a list (direct solution).
 
@@ -156,7 +176,7 @@ encodeD (x:xs) =
     in if x==(snd xh) then ( (fst xh)+1, x) :((tail . encodeD) xs)
        else (1,x):(encodeD xs)
 
-{-4 Problem 14
+{- Problem 14
 
 (*) Duplicate the elements of a list.  -}
 
@@ -168,7 +188,7 @@ duppeList (x:xs) = x:x:(duppeList xs)
 -- a list to altuzar-spiiiiiiiiikkkkkkkkkkk 
 
 
-{-5 Problem 15
+{- Problem 15
 
 (**) Replicate the elements of a list a given number of times.  -}
 
@@ -178,7 +198,7 @@ repList 0 x = []
 repList n (x:xs) = x:[]++(repList (n-1) (x:[]))++(repList n xs)
 
 
-{- 6 Problem 16
+{- Problem 16
 
 (**) Drop every N'th element from a list. -}
 
@@ -191,7 +211,7 @@ mydrop n (x:xs) =
         rm1occur nl (xl:xsl) = (xl:fst((rm1occur (nl-1) xsl)),snd ((rm1occur (nl-1) xsl)) ) 
     in fst(rm1occur n (x:xs))++(mydrop n (snd(rm1occur n (x:xs))) )
 
-{- 7 Problem 17
+{- Problem 17
 
 (*) Split a list into two parts; the length of the first part is
 given. -}
@@ -201,7 +221,7 @@ mySplit n [] = ([],[])
 mySplit 1 (x:xs) = (x:[],xs)
 mySplit n (x:xs) = (x:fst((mySplit (n-1) xs)),snd ((mySplit (n-1) xs)) )
 
-{-8 Problem 18
+{- Problem 18
 
 (**) Extract a slice from a list.
 
@@ -216,7 +236,7 @@ slice 1 m (x:xs) = x:(slice 1 (m-1) xs)
 slice n m (x:xs) = slice (n-1)(m-1) xs
 
 
-{-9 Problem 19
+{- Problem 19
 
 (**) Rotate a list N places to the left.
 
@@ -228,7 +248,7 @@ rotate n x =
     let aux = mySplit (mod n (length x)) x
     in (snd aux)++(fst aux)
 
-{-10 Problem 20
+{- Problem 20
 
 (*) Remove the K'th element from a list.  -}
 
@@ -238,7 +258,7 @@ popAt 1 (x:xs) = (x,xs)
 popAt n (x:xs) = (fst(popAt (n-1) xs), x:(snd (popAt (n-1) xs)) )
 
 
-{-Problem 21
+{- Problem 21
 
 Insert an element at a given position into a list. -}
 
@@ -247,28 +267,46 @@ insertAt n a [] = a:[] --for the moment
 insertAt 1 a x = a:x
 insertAt n a (x:xs) = x:(insertAt (n-1) a xs)
 
-{-2 Problem 22
+{- Problem 22
 
 Create a list containing all integers within a given range. -}
 
-myRange (Ord a, Num a) => a -> a -> [a]
+
+myRange :: (Ord a, Num a) => a -> a -> [a]
 --myRange n n = n:[]
 myRange n m = if n>m then []
               else n:(myRange (n+1) m)
 
-{-3 Problem 23
+{- Problem 23
 
 Extract a given number of randomly selected elements from a list. -}
 
-{-4 Problem 24
+rndSelect :: Int -> [a] -> [a]
+rndSelect n [] = []
+rndSelect 0 x = []
+rndSelect n (x:xs) =     
+    let aux = popAt (getRndinRange 1 (myLenght (x:xs))) (x:xs)
+    in (fst aux):(rndSelect (n-1) (snd aux))
+
+
+{- Problem 24
 
 Lotto: Draw N different random numbers from the set 1..M. -}
 
-{-5 Problem 25
+diffSelect :: Int -> Int -> [Int]
+diffSelect a b =
+    if a > b then myRange 1 b
+    else rndSelect a (myRange 1 b)
+
+
+{- Problem 25
 
 Generate a random permutation of the elements of a list. -}
 
-{-6 Problem 26
+-- leave it for later
+
+
+{- Problem 26
 
 (**) Generate the combinations of K distinct objects chosen from the N elements of a list
 
@@ -278,7 +316,27 @@ denotes the well-known binomial coefficients). For pure
 mathematicians, this result may be great. But we want to really
 generate all the possibilities in a list.-}
 
-{-7 Problem 27 
+-- have to double-check exit conditions
+combos :: Int -> [a] -> [[a]]
+combos n [] = []
+combos 0 x = []
+combos 1 x =
+    let spl :: [a]->[[a]]
+        spl [] = []
+        spl (x:xs)= (x:[]):(spl xs)
+    in spl x
+combos n (x:xs) =
+    let sub = combos (n-1) xs 
+        zipp :: a -> [[a]] ->[[a]]
+        zipp a [] = []
+        zipp a [[]] = (a:[]):[]
+        zipp a x1 =(a:(head x1)):(zipp a (tail x1))
+    in (zipp x sub)  ++ (
+                        if n <= (myLenght xs) then (combos n xs)
+                        else []
+                        ) 
+
+{- Problem 27 
 
 Group the elements of a set into disjoint subsets.
 
@@ -289,7 +347,10 @@ the possibilities and returns them in a list.
 b) Generalize the above predicate in a way that we can specify a list
 of group sizes and the predicate will return a list of groups. -}
 
-{-8 Problem 28
+
+
+
+{- Problem 28
 
 Sorting a list of lists according to length of sublists
 
