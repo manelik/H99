@@ -1,6 +1,8 @@
 module B3
     where
 
+import Lists (myLenght,mySplit)
+
 data Tree a = Empty | Branch a (Tree a) (Tree a)
               deriving (Show, Eq)
 
@@ -44,7 +46,7 @@ xmap (f:fs) x = (map f x):(xmap fs x)
 
 cbalTree :: Int -> [Tree Char]
 cbalTree 0 = [Empty]
-cbalTree 1 = (Branch 'x' Empty Empty):[]
+cbalTree 1 = (leaf 'x'):[]
 cbalTree n = 
     let n1= div (n-1) 2
         n2= n1 + (mod (n-1) 2)
@@ -77,6 +79,158 @@ symmTree :: Tree a -> Bool
 symmTree Empty = True                   
 symmTree (Branch lv lefty righty) =
     mirror lefty righty
+
+
+{-Problem 57
+
+(**) Binary search trees (dictionaries)
+
+Use the predicate add/3, developed in chapter 4 of the course, to
+write a predicate to construct a binary search tree from a list of
+integer numbers. -}
+
+
+consTree :: [a] -> Tree a
+consTree [] = Empty
+consTree (x:[])= Branch x Empty Empty
+--consTree (x:x1:[])= Branch x (consTree (x1:[])) Empty
+--consTree (x:x1:x2:[])= Branch x (consTree (x1:[])) (consTree (x2:[])) 
+consTree (x:xs) = 
+    let 
+        stail= mySplit (div (myLenght xs) 2) xs 
+    in Branch x (consTree (fst stail)) (consTree (snd stail))
+
+
+{-Problem 58
+
+(**) Generate-and-test paradigm
+
+Apply the generate-and-test paradigm to construct all symmetric,
+completely balanced binary trees with a given number of nodes.  -}
+
+-- We can generate balanced Trees, and see if a given tree is symmetric
+
+-- maybe improved by a on the go check?
+
+
+scbalTrees :: Int -> [Tree Char]
+scbalTrees n = filter symmTree (cbalTree n) 
+
+
+{-Problem 59
+
+(**) Construct height-balanced binary trees
+
+In a height-balanced binary tree, the following property holds for
+every node: The height of its left subtree and the height of its right
+subtree are almost equal, which means their difference is not greater
+than one. -}
+
+
+
+
+
+{-Problem 60
+
+(**) Construct height-balanced binary trees with a given number of nodes
+
+Consider a height-balanced binary tree of height H. What is the
+maximum number of nodes it can contain?  Clearly, MaxN = 2**H -
+1. However, what is the minimum number MinN? This question is more
+difficult. Try to find a recursive statement and turn it into a
+function minNodes that returns the minimum number of nodes in a
+height-balanced binary tree of height H. On the other hand, we might
+ask: what is the maximum height H a height-balanced binary tree with N
+nodes can have? Write a function maxHeight that computes this.
+
+Now, we can attack the main problem: construct all the height-balanced
+binary trees with a given nuber of nodes. Find out how many
+height-balanced trees exist for N = 15. -}
+
+
+
+{-Problem 61 
+
+Count the leaves of a binary tree
+
+A leaf is a node with no successors. Write a predicate count_leaves/2
+to count them. -}
+
+
+leafcount :: Tree a -> Int
+leafcount Empty = 0
+leafcount (Branch x Empty Empty) = 1
+leafcount (Branch x lefty righty)=
+    (leafcount lefty) + (leafcount righty)
+
+{-Problem 61A
+
+Collect the leaves of a binary tree in a list
+
+A leaf is a node with no successors. Write a predicate leaves/2 to
+collect them in a list. -}
+
+leafcollect :: Tree a -> [a]
+leafcollect Empty = []
+leafcollect (Branch x Empty Empty) = x:[]
+leafcollect (Branch x lefty righty)=
+    (leafcollect lefty) ++ (leafcollect righty)
+
+
+{-Problem 62
+
+Collect the internal nodes of a binary tree in a list
+
+An internal node of a binary tree has either one or two non-empty
+successors. Write a predicate internals/2 to collect them in a list.
+-}
+
+intcollect :: Tree a -> [a]
+intcollect Empty = []
+intcollect (Branch x Empty Empty) = []
+intcollect (Branch x lefty righty)=
+    x:[]++(intcollect lefty) ++ (intcollect righty)
+
+
+{-Problem 62B
+
+Collect the nodes at a given level in a list
+
+A node of a binary tree is at level N if the path from the root to the
+node has length N-1. The root node is at level 1. Write a predicate
+atlevel/3 to collect all nodes at a given level in a list.-}
+
+levcollect :: Int -> Tree a -> [a]
+levcollect n Empty = []
+levcollect 1 (Branch x lefty righty) = x:[]
+levcollect n (Branch x lefty righty) =
+    x:[]++(levcollect (n-1) lefty)++(levcollect (n-1) righty)
+
+
+{-Problem 63
+
+Construct a complete binary tree
+
+A complete binary tree with height H is defined as follows:
+
+    The levels 1,2,3,...,H-1 contain the maximum number of nodes (i.e
+    2**(i-1) at the level i) In level H, which may contain less than
+    the maximum possible number of nodes, all the nodes are
+    "left-adjusted". This means that in a levelorder tree traversal
+    all internal nodes come first, the leaves come second, and empty
+    successors (the nil's which are not really nodes!) come last.
+
+Particularly, complete binary trees are used as data structures (or
+addressing schemes) for heaps.
+
+We can assign an address number to each node in a complete binary tree
+by enumerating the nodes in level-order, starting at the root with
+number 1. For every node X with address A the following property
+holds: The address of X's left and right successors are 2*A and 2*A+1,
+respectively, if they exist. This fact can be used to elegantly
+construct a complete binary tree structure.
+
+Write a predicate complete_binary_tree/2.-}
 
 
 

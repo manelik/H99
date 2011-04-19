@@ -1,4 +1,4 @@
-module Prob1_10
+module Lists
     where
 
 --import Random
@@ -218,6 +218,7 @@ given. -}
 
 mySplit :: Int -> [a] -> ([a],[a])
 mySplit n [] = ([],[])
+mySplit 0 x  = ([], x)
 mySplit 1 (x:xs) = (x:[],xs)
 mySplit n (x:xs) = (x:fst((mySplit (n-1) xs)),snd ((mySplit (n-1) xs)) )
 
