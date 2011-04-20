@@ -232,6 +232,21 @@ construct a complete binary tree structure.
 
 Write a predicate complete_binary_tree/2.-}
 
+compTree :: Int -> Tree Char
+compTree 0 = Empty
+compTree n =
+    let 
+        hleft i = if (n+1)>=(2^(i-1)) then hleft (i+1)
+                  else i-1
+        hloc = hleft 1
+        res = n + 1 - 2^(hloc-1)
+        nb = 2^(hloc-2)-1
+        nsplit = if res<=(nb+1) then (res,0)
+                 else ((nb +1),res - (nb+1))
+        rn = nb  + (snd nsplit)
+        ln = nb  + (fst nsplit)
+    in Branch 'x' (compTree ln) (compTree rn)
+
 
 
 
