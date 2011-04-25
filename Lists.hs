@@ -53,18 +53,21 @@ elementAt (x:xs) n = elementAt xs (n-1)
 
 (*) Find the number of elements of a list. -}
 myLenght :: [a]-> Int
-myLenght [] = 0
-myLenght (x:xs) = 1 + (myLenght xs)
+myLenght = foldr (\a  -> (1 +)) 0
+--Not so abstract style
+--myLenght [] = 0
+--myLenght (x:xs) = 1 + (myLenght xs)
 
 
 {- Problem 5
 
 (*) Reverse a list. -}
 myReverse :: [a]->[a]
-myReverse [] = []
-myReverse (x:xs) = 
-    let x1 = (myReverse xs)
-    in x1 ++ (x:[])
+myReverse = foldr (\a  -> (flip (++)) (a:[]) ) []
+--myReverse [] = []
+--myReverse (x:xs) = 
+--    let x1 = (myReverse xs)
+--    in x1 ++ (x:[])
 
 
 {- Problem 6
