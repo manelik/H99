@@ -96,12 +96,18 @@ If a list contains repeated elements they should be replaced with a
 single copy of the element. The order of the elements should not be
 changed. -}
 transAltuzar :: Eq a => [a]-> [a]
-transAltuzar [] = []
-transAltuzar (x:[]) = x:[]
-transAltuzar (x:xs) =
-    let x1 =  if x /= (head xs) then x:[]
-              else []
-    in x1++(transAltuzar xs)
+transAltuzar = foldr (\a b -> if (myLenght b) > 0 
+                              then if a /= (head b) 
+                                   then (:) a b 
+                                   else  b
+                              else (:) a b
+                     ) []
+--transAltuzar [] = []
+--transAltuzar (x:[]) = x:[]
+--transAltuzar (x:xs) =
+--    let x1 =  if x /= (head xs) then x:[]
+--              else []
+--    in x1++(transAltuzar xs)
 
 {- Problem 9
 
@@ -155,7 +161,7 @@ Given a run-length code list generated as specified in problem
 -- unmodified
 decode :: [( Int , a )] -> [a]
 decode [] = []
-decode ((0,a):xs) = decode xs
+decode ((0,_):xs) = decode xs
 decode ((n,a):xs) = a:[] ++ decode ( (n-1,a):xs)
 
 
@@ -184,8 +190,9 @@ encodeD (x:xs) =
 (*) Duplicate the elements of a list.  -}
 
 duppeList :: [a] -> [a]
-duppeList [] = []
-duppeList (x:xs) = x:x:(duppeList xs)
+duppeList = foldr (\a  -> (a:).(a:) ) []
+--duppeList [] = []
+--duppeList (x:xs) = x:x:(duppeList xs)
 
 -- iteration of this function is almost equivalent to translate 
 -- a list to altuzar-spiiiiiiiiikkkkkkkkkkk 
@@ -196,8 +203,8 @@ duppeList (x:xs) = x:x:(duppeList xs)
 (**) Replicate the elements of a list a given number of times.  -}
 
 repList :: Int -> [a] -> [a]
-repList n [] = []
-repList 0 x = []
+repList _ [] = []
+repList 0 _ = []
 repList n (x:xs) = x:[]++(repList (n-1) (x:[]))++(repList n xs)
 
 
