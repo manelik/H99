@@ -87,7 +87,15 @@ isPalindrome x =
 Transform a list, possibly holding lists as elements into a `flat'
 list by replacing each list with its elements (recursively). -}
 
---Need to learn hoe to handle this kind of structures
+data MultList a = Nil
+                | SingElem a (MultList a)
+                | ListElem (MultList a) (MultList a)
+                deriving (Eq, Ord, Show, Read)
+
+flattenList :: MultList a -> [a]
+flattenList Nil = []
+flattenList (SingElem x xs) = x: (flattenList xs)
+flattenList (ListElem xf xs)= (flattenList xf)++(flattenList xs) 
 
 {- Problem 8
 
