@@ -104,12 +104,13 @@ If a list contains repeated elements they should be replaced with a
 single copy of the element. The order of the elements should not be
 changed. -}
 transAltuzar :: Eq a => [a]-> [a]
-transAltuzar = foldr (\a b -> if (myLenght b) > 0 
-                              then if a /= (head b) 
-                                   then (:) a b 
-                                   else  b
-                              else (:) a b
-                     ) []
+transAltuzar = 
+    foldr (\a b -> if (myLenght b) > 0 
+                   then if a /= (head b) 
+                        then (:) a b 
+                        else  b
+                   else (:) a b
+          ) []
 --transAltuzar [] = []
 --transAltuzar (x:[]) = x:[]
 --transAltuzar (x:xs) =
@@ -156,8 +157,22 @@ Modify the result of problem 10 in such a way that if an element has
 no duplicates it is simply copied into the result list. Only elements
 with duplicates are transferred as (N E) lists. -}
 
---Need a list tipe that has pairs and single values as elements
+--Need a list type that has pairs and single values as elements
 
+data Ldist a = Nel
+             | Sval a
+             | Dval Int a
+               deriving (Eq, Ord, Show, Read)
+
+encodep :: Eq a => [a] -> [Ldist a]
+encodep [] = []
+--lazy solution
+encodep x =
+    let pcount :: [[a]] -> [Ldist a]
+        pcount [] = Nel
+        pcount ((a:[]):xs) = ((Sval a):[]) ++ (pcount xs)
+        pcount (a:xs) = ( (Dval (myLenght a) (head a)):[])++(pcount xs)
+    in (pcount.pack) x
 
 {- Problem 12
 
